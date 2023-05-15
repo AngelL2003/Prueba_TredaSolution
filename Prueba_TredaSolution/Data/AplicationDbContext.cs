@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Prueba_Tecnica_Treda.Entidades;
 
 
 namespace Prueba_TredaSolution.Data

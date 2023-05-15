@@ -1,9 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Prueba_TredaSolution.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<PTSContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PTSContext") ?? throw new InvalidOperationException("Connection string 'PTSContext' not found.")));
 
 // Add services to the container.
 
@@ -14,7 +17,9 @@ builder.Services.AddSwaggerGen();
 
 //Cadena de conneccion 
 builder.Services.AddDbContext<AplicationDbContext>(opciones =>
-opciones.UseSqlServer("name=DefaultConnection"));
+{
+    opciones.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
 
 //Enable CORS
@@ -37,6 +42,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(myAllowSpecificOrigins);
 
 app.UseAuthorization();
 
